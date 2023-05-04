@@ -1,8 +1,11 @@
 {
-  "name": "server",
+  "name": "online-cinema",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Online movie application",
+  "author": {
+    "email": "izmailov.ao@mail.ru",
+    "name": "Artyom izmailov"
+  },
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
