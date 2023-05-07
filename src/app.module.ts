@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { getMongoDbConfig } from './config/mongo.config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { GenreModule } from './genre/genre.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     UserModule,
+    GenreModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
