@@ -1,12 +1,13 @@
 {
-  "singleQuote": true,
-  "trailingComma": "all",
-  "tabWidth": 2,
-  "semi": true,
-  "prettier/prettier": [
-    "error",
-    {
-      "endOfLine": "auto"
-    }
-  ]
+	"singleQuote": true,
+	"trailingComma": "all",
+	"tabWidth": 2,
+	"semi": true,
+	"useTabs": true,
+	"prettier/prettier": [
+		"error",
+		{
+			"endOfLine": "auto"
+		}
+	]
 }
