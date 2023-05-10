@@ -19,6 +19,7 @@ import { MovieService } from './movie.service';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { GenreIdsDto } from './dto/genreIds.dto';
 import { UpdateCountDto } from './dto/updateCount.dto';
+import { log } from 'console';
 
 @Controller('movie')
 export class MovieController {
@@ -37,7 +38,7 @@ export class MovieController {
 	@UsePipes(new ValidationPipe())
 	@Post('by-genres')
 	@HttpCode(200)
-	async byGenres(@Body('genreIds') genreIds: Types.ObjectId[]) {
+	async byGenres(@Body('genreIds') genreIds: GenreIdsDto[]) {
 		return this.moviesService.byGenres(genreIds);
 	}
 
@@ -51,7 +52,7 @@ export class MovieController {
 		return this.moviesService.getMostPopular();
 	}
 
-	// @UsePipes(new ValidationPipe())
+	@UsePipes(new ValidationPipe())
 	@Put('update-count-opened')
 	@HttpCode(200)
 	async updateCountOpened(@Body('slug') slug: string) {

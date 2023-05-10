@@ -36,9 +36,21 @@ export class ActorService {
 		//Agregation
 
 		return this.actorModel
-			.find(options)
-			.select('-updatedAt -__v')
-			.sort({ createdAt: 'desc' })
+			.aggregate()
+			.match({ options })
+			.lookup({
+				from: 'Movie',
+				foreignField: 'actors',
+				localField: '_id',
+				as: 'movies',
+			})
+			.addFields({
+				countMovies: {
+					$size: '$movies',
+				},
+			})
+			.project({ __v: 0, updatedAt: 0, movies: 0 })
+			.sort({ createdAt: -1 })
 			.exec();
 	}
 
@@ -73,7 +85,7 @@ export class ActorService {
 
 	async delete(_id: string) {
 		const deleteDoc = await this.actorModel.findByIdAndDelete(_id).exec();
-		if (!deleteDoc) throw new NotFoundException('Actor not foound');
+		if (!deleteDoc) throw new NotFoundException('Actor not found');
 
 		return deleteDoc;
 	}

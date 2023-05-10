@@ -6,6 +6,7 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 import { Types } from 'mongoose';
 import { GenreIdsDto } from './dto/genreIds.dto';
 import { UpdateCountDto } from './dto/updateCount.dto';
+import { log } from 'console';
 
 @Injectable()
 export class MovieService {
@@ -51,7 +52,7 @@ export class MovieService {
 		return docs;
 	}
 
-	async byGenres(genreIds: Types.ObjectId[]) {
+	async byGenres(genreIds: GenreIdsDto[]) {
 		const docs = await this.movieModel
 			.find({ genres: { $in: genreIds } })
 			.exec();
