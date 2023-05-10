@@ -7,11 +7,13 @@ import { Types } from 'mongoose';
 import { GenreIdsDto } from './dto/genreIds.dto';
 import { UpdateCountDto } from './dto/updateCount.dto';
 import { log } from 'console';
+import { TelegramService } from 'src/telegram/telegram.service';
 
 @Injectable()
 export class MovieService {
 	constructor(
 		@InjectModel(MovieModel) private readonly movieModel: ModelType<MovieModel>,
+		private readonly telegramService: TelegramService,
 	) {}
 
 	async getAll(searchTerm: string) {
@@ -52,7 +54,7 @@ export class MovieService {
 		return docs;
 	}
 
-	async byGenres(genreIds: GenreIdsDto[]) {
+	async byGenres(genreIds: Types.ObjectId[]) {
 		const docs = await this.movieModel
 			.find({ genres: { $in: genreIds } })
 			.exec();
@@ -124,6 +126,11 @@ export class MovieService {
 	}
 
 	async update(_id: string, dto: UpdateMovieDto) {
+		if (!dto.isSendTelegram) {
+			await this.sendNotification(dto);
+			dto.isSendTelegram = true;
+		}
+
 		const doc = await this.movieModel
 			.findByIdAndUpdate(_id, dto, {
 				new: true,
@@ -139,5 +146,28 @@ export class MovieService {
 		if (!doc) throw new NotFoundException('Movie not found');
 
 		return doc;
+	}
+
+	async sendNotification(dto: UpdateMovieDto) {
+		// if (process.env.NODE_ENV !== 'development')
+		// await this.telegramService.sendPhoto(dto.poster);
+		await this.telegramService.sendPhoto(
+			'https://images.hdqwalls.com/download/looper-movie-poster-9r-2560x1600.jpg',
+		);
+
+		const msg = `<b>${dto.title}</b>`;
+
+		await this.telegramService.sendMessage(msg, {
+			reply_markup: {
+				inline_keyboard: [
+					[
+						{
+							url: 'https://okko.tv/movie/free-guy',
+							text: 'Go to watch',
+						},
+					],
+				],
+			},
+		});
 	}
 }

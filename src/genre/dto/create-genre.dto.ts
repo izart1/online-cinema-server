@@ -9,7 +9,7 @@ export class CreateGenreDto {
 
 	@IsString()
 	description: string;
-  
+
 	@IsString()
 	icon: string;
 }
