@@ -87,6 +87,20 @@ export class MovieService {
 		return doc;
 	}
 
+	async updateRating(id: Types.ObjectId, newRating: number) {
+		return this.movieModel
+			.findByIdAndUpdate(
+				id,
+				{
+					rating: newRating,
+				},
+				{
+					new: true,
+				},
+			)
+			.exec();
+	}
+
 	async byId(_id: string) {
 		const doc = await this.movieModel.findById(_id).exec();
 		if (!doc) throw new NotFoundException('Movie not found');
